@@ -7,15 +7,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { format, addDays } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Check, ChevronLeft, ChevronRight, Loader2, MessageCircle } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Loader2, MessageCircle, Truck, Timer, Video } from 'lucide-react';
 import { crearReserva, obtenerDisponibilidad } from '@/lib/api';
 import { useToast } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 
 const TIERS = [
-  { id: 'sesion-individual', nombre: 'Sesión Individual', precio: '$8.000', maxPersonas: 4 },
-  { id: 'pack-familiar', nombre: 'Pack Familiar', precio: '$25.000', maxPersonas: 6 },
-  { id: 'membresia', nombre: 'Sesión de Membresía', precio: 'Incluida', maxPersonas: 2 },
+  {
+    id: 'arena-construccion',
+    nombre: 'Arena',
+    icon: Truck,
+    precio: '$10.000',
+    descripcion: 'Vehículos de construcción a control remoto',
+    maxPersonas: 4,
+  },
+  {
+    id: 'pista-1-76',
+    nombre: 'Pista de Carreras 1:76',
+    icon: Timer,
+    precio: '$8.000',
+    descripcion: 'Autos de carrera a escala 1:76',
+    maxPersonas: 6,
+  },
+  {
+    id: 'pista-1-24-fpv',
+    nombre: 'Pista de Carreras 1:24 FPV',
+    icon: Video,
+    precio: '$15.000',
+    descripcion: 'Autos de carrera a escala 1:24 con cámara FPV',
+    maxPersonas: 4,
+  },
 ];
 
 const reservaSchema = z.object({
@@ -106,7 +127,7 @@ export default function Reservas() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h1 className="text-3xl sm:text-4xl font-extrabold text-center">Reserva tu carrera</h1>
-      <p className="text-muted text-center mt-2">Elige tu plan, fecha y horario en 3 simples pasos</p>
+      <p className="text-muted text-center mt-2">Elige tu pista, fecha y horario en 3 simples pasos</p>
 
       <div className="flex items-center justify-center gap-2 mt-10 mb-12">
         {[1, 2, 3].map((n) => (
@@ -134,7 +155,7 @@ export default function Reservas() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
           >
-            <h2 className="text-xl font-semibold mb-6">1. Elige tu plan</h2>
+            <h2 className="text-xl font-semibold mb-6">1. Elige tu pista</h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {TIERS.map((tier) => (
                 <button
@@ -146,9 +167,13 @@ export default function Reservas() {
                     tierSeleccionado === tier.id ? 'border-primary' : 'border-transparent'
                   )}
                 >
+                  <div className="w-10 h-10 rounded-lg bg-primary/15 flex items-center justify-center mb-3">
+                    <tier.icon className="text-primary" size={18} />
+                  </div>
                   <p className="font-semibold">{tier.nombre}</p>
                   <p className="text-accent font-bold text-lg mt-1">{tier.precio}</p>
-                  <p className="text-xs text-muted mt-2">Hasta {tier.maxPersonas} personas</p>
+                  <p className="text-xs text-muted mt-2">{tier.descripcion}</p>
+                  <p className="text-xs text-muted mt-1">Hasta {tier.maxPersonas} personas</p>
                 </button>
               ))}
             </div>
@@ -345,6 +370,7 @@ export default function Reservas() {
               Te enviamos un correo de confirmación a <strong className="text-white">{reservaExitosa.email}</strong>.
             </p>
             <div className="mt-6 glass rounded-xl p-4 text-left text-sm max-w-sm mx-auto">
+              <p><span className="text-muted">Pista:</span> {TIERS.find((t) => t.id === reservaExitosa.tier)?.nombre || reservaExitosa.tier}</p>
               <p><span className="text-muted">Fecha:</span> {format(new Date(reservaExitosa.fecha), "d 'de' MMMM", { locale: es })}</p>
               <p><span className="text-muted">Horario:</span> {reservaExitosa.horario}</p>
               <p><span className="text-muted">Personas:</span> {reservaExitosa.personas}</p>

@@ -16,6 +16,12 @@ const HORARIOS_BASE = [
 
 const CUPOS_POR_HORARIO = 3;
 
+const NOMBRES_PISTA = {
+  'arena-construccion': 'Arena de Construcción',
+  'pista-1-76': 'Pista de Carreras 1:76',
+  'pista-1-24-fpv': 'Pista de Carreras 1:24 FPV',
+};
+
 async function crearReserva(req, res, next) {
   try {
     const { nombre, email, telefono, fecha, horario, tier, personas, mensaje } = req.body;
@@ -56,6 +62,7 @@ async function crearReserva(req, res, next) {
       month: 'long',
       day: 'numeric',
     });
+    const nombrePista = NOMBRES_PISTA[reserva.tier] || reserva.tier;
 
     await enviarEmail({
       to: reserva.email,
@@ -65,7 +72,7 @@ async function crearReserva(req, res, next) {
         nombre: reserva.nombre,
         fecha: fechaFormateada,
         horario: reserva.horario,
-        tier: reserva.tier,
+        tier: nombrePista,
         personas: reserva.personas,
       },
     });
@@ -80,7 +87,7 @@ async function crearReserva(req, res, next) {
         telefono: reserva.telefono,
         fecha: fechaFormateada,
         horario: reserva.horario,
-        tier: reserva.tier,
+        tier: nombrePista,
         personas: reserva.personas,
         mensaje: reserva.mensaje || 'Sin mensaje adicional',
       },

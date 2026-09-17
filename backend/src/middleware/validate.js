@@ -20,8 +20,8 @@ const reservaSchema = z.object({
   telefono: z.string().min(6, 'Teléfono inválido').max(30),
   fecha: z.coerce.date({ errorMap: () => ({ message: 'Fecha inválida' }) }),
   horario: z.string().min(1, 'Selecciona un horario'),
-  tier: z.enum(['sesion-individual', 'pack-familiar', 'membresia'], {
-    errorMap: () => ({ message: 'Tier inválido' }),
+  tier: z.enum(['arena-construccion', 'pista-1-76', 'pista-1-24-fpv'], {
+    errorMap: () => ({ message: 'Debes seleccionar una pista válida' }),
   }),
   personas: z.coerce.number().int().min(1).max(20),
   mensaje: z.string().max(1000).optional().nullable(),
