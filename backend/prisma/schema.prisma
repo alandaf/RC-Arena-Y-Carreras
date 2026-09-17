@@ -1,0 +1,47 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Reserva {
+  id           String   @id @default(cuid())
+  nombre       String
+  email        String
+  telefono     String
+  fecha        DateTime
+  horario      String
+  tier         String
+  personas     Int
+  mensaje      String?
+  estado       String   @default("pendiente")
+  recordatorio Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Contacto {
+  id        String   @id @default(cuid())
+  nombre    String
+  email     String
+  asunto    String
+  mensaje   String
+  tipo      String   @default("general")
+  empresa   String?
+  leido     Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Membresia {
+  id        String   @id @default(cuid())
+  nombre    String
+  email     String
+  telefono  String
+  plan      String
+  estado    String   @default("interesado")
+  createdAt DateTime @default(now())
+}
