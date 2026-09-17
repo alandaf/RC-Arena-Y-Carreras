@@ -90,18 +90,50 @@ make shell-front   # abre una shell dentro del contenedor frontend
 make reset         # docker compose down -v — borra todo, incluyendo la BD
 ```
 
-## Pasar a producción
+## Pasar a producción (VPS con Docker)
 
-Este setup es exclusivamente para desarrollo local. Para producción hay que cambiar, como mínimo:
+El repo incluye un segundo stack, `docker-compose.prod.yml`, pensado para correr todo —
+frontend, backend, base de datos y HTTPS— en un único VPS con Docker instalado.
 
-- **`backend/.env`**:
-  - `NODE_ENV=production`
-  - `DATABASE_URL` apuntando a una base de datos gestionada (no el contenedor `db` de Docker Compose local).
-  - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` apuntando a un proveedor SMTP real (no MailHog), por ejemplo SendGrid, Resend o SES.
-  - `FRONTEND_URL` con el dominio real de producción (para CORS).
-  - Secrets reales y rotados, nunca commiteados al repositorio.
-- **Frontend**: `VITE_API_URL` debe apuntar al dominio real de la API en producción, y el build se sirve estático (`npm run build`) detrás de un CDN/servidor web, no con `vite dev`.
-- **Backend**: correr `node server.js` (sin nodemon) detrás de un proceso manager (PM2, systemd) o como contenedor sin bind mounts de código, sin volúmenes de hot-reload.
-- **Base de datos**: usar un Postgres gestionado con backups automáticos, no el volumen local `postgres_data`.
-- Quitar Adminer y MailHog del despliegue de producción — son solo herramientas de desarrollo.
-- Configurar HTTPS/TLS (reverse proxy como Nginx o un balanceador gestionado) delante de frontend y backend.
+Diferencias clave respecto al stack de desarrollo:
+
+- **Frontend**: se compila con `npm run build` (Vite) y se sirve como archivos estáticos vía
+  **Nginx** ([frontend/Dockerfile.prod](frontend/Dockerfile.prod), [frontend/nginx.conf](frontend/nginx.conf)) —
+  nada de `vite dev` ni hot-reload.
+- **Backend**: corre `node server.js` directo (sin `nodemon`), sin bind mounts de código, y
+  aplica las migraciones de Prisma automáticamente al arrancar (`prisma migrate deploy`)
+  ([backend/Dockerfile.prod](backend/Dockerfile.prod)).
+- **HTTPS automático**: **Caddy** ([Caddyfile](Caddyfile)) hace de reverse proxy — enruta
+  `/api/*` al backend y el resto al frontend, y obtiene/renueva certificados TLS de Let's
+  Encrypt solo con apuntar tu dominio a la IP del VPS.
+- **Adminer y MailHog no están incluidos** — son herramientas de desarrollo. En producción
+  usa un SMTP real y consulta la BD con un cliente Postgres normal o un túnel SSH.
+
+### Pasos para desplegar
+
+1. En el VPS, con Docker y Docker Compose instalados, clona el repo.
+2. Copia las plantillas de variables de entorno y complétalas con valores reales:
+   ```bash
+   cp .env.production.example .env
+   cp backend/.env.production.example backend/.env.production
+   ```
+   - En `.env` (raíz): `DOMAIN` (tu dominio, apuntando por DNS a la IP del VPS),
+     `VITE_API_URL` (`https://tudominio.cl`), y las credenciales de Postgres.
+   - En `backend/.env.production`: el `DATABASE_URL` con esas mismas credenciales de Postgres,
+     `FRONTEND_URL`, y los datos de tu proveedor SMTP real (Resend, SendGrid, SES, etc — MailHog
+     no aplica aquí).
+3. Levanta el stack:
+   ```bash
+   make prod-up
+   ```
+   Esto construye las imágenes de producción, levanta Postgres, aplica las migraciones
+   automáticamente y expone el sitio en `https://tudominio.cl` vía Caddy.
+4. Si necesitas cargar datos de prueba (normalmente no, en producción real):
+   ```bash
+   make prod-seed
+   ```
+
+Otros comandos: `make prod-logs` (logs en vivo) y `make prod-down` (detener el stack).
+
+**Importante**: nunca commitees `.env` ni `backend/.env.production` con credenciales reales —
+ambos están en `.gitignore`; solo sus `.example` quedan versionados.

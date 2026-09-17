@@ -1,4 +1,4 @@
-.PHONY: up down logs db mail migrate seed shell-back shell-front reset
+.PHONY: up down logs db mail migrate seed shell-back shell-front reset prod-up prod-down prod-logs prod-seed
 
 up:
 	docker compose up --build
@@ -31,3 +31,15 @@ shell-front:
 
 reset:
 	docker compose down -v
+
+prod-up:
+	docker compose -f docker-compose.prod.yml --env-file .env up --build -d
+
+prod-down:
+	docker compose -f docker-compose.prod.yml --env-file .env down
+
+prod-logs:
+	docker compose -f docker-compose.prod.yml --env-file .env logs -f
+
+prod-seed:
+	docker compose -f docker-compose.prod.yml --env-file .env exec backend npx prisma db seed
