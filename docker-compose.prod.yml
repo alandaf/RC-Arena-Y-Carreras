@@ -1,37 +1,21 @@
 services:
-  caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    environment:
-      - DOMAIN=${DOMAIN}
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - frontend
-      - backend
-
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        VITE_API_URL: ${VITE_API_URL}
+        VITE_API_URL: ${VITE_API_URL:-https://rcarenaycarreras.cl}
     restart: unless-stopped
-    expose:
-      - "80"
+    ports:
+      - "127.0.0.1:3030:80"
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
     restart: unless-stopped
-    expose:
-      - "3001"
+    ports:
+      - "127.0.0.1:3031:3001"
     env_file:
       - ./backend/.env.production
     depends_on:
@@ -48,18 +32,17 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB:-rcarena}
+      POSTGRES_USER: ${POSTGRES_USER:-rcarena_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rcarena_user} -d ${POSTGRES_DB:-rcarena}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
 volumes:
   postgres_data:
-  caddy_data:
-  caddy_config:
+
