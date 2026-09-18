@@ -152,14 +152,14 @@ export default function Contacto() {
               <Phone className="text-primary shrink-0 mt-0.5" size={20} />
               <div>
                 <p className="font-semibold text-sm">Teléfono</p>
-                <p className="text-muted text-sm">+56 9 1234 5678</p>
+                <p className="text-muted text-sm">+56 9 7623 9238</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Mail className="text-primary shrink-0 mt-0.5" size={20} />
               <div>
                 <p className="font-semibold text-sm">Email</p>
-                <p className="text-muted text-sm">hola@rcarena.cl</p>
+                <p className="text-muted text-sm">ventas@simarp.net</p>
               </div>
             </div>
           </div>

@@ -54,11 +54,11 @@ export default function Footer() {
             </li>
             <li className="flex items-center gap-2">
               <Phone size={16} className="text-primary shrink-0" />
-              +56 9 1234 5678
+              +56 9 7623 9238
             </li>
             <li className="flex items-center gap-2">
               <Mail size={16} className="text-primary shrink-0" />
-              hola@rcarena.cl
+              ventas@simarp.net
             </li>
           </ul>
         </div>

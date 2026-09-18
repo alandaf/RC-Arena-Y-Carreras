@@ -376,7 +376,7 @@ export default function Reservas() {
               <p><span className="text-muted">Personas:</span> {reservaExitosa.personas}</p>
             </div>
             <a
-              href={`https://wa.me/56912345678?text=${mensajeWhatsapp}`}
+              href={`https://wa.me/56976239238?text=${mensajeWhatsapp}`}
               target="_blank"
               rel="noreferrer"
               className="mt-8 inline-flex items-center gap-2 bg-green hover:bg-green/90 text-white font-semibold px-6 py-3 rounded-full"

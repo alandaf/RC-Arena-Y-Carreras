@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '56912345678';
+const WHATSAPP_NUMBER = '56976239238';
 const DEFAULT_MESSAGE = 'Hola! Quiero más información sobre RC Arena & Carreras 🏎️';
 
 export default function WhatsAppFAB() {
