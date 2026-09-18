@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 const reservasRoutes = require('./src/routes/reservas');
 const contactoRoutes = require('./src/routes/contacto');
 const membresiasRoutes = require('./src/routes/membresias');
+const adminRoutes = require('./src/routes/admin');
 const errorHandler = require('./src/middleware/errorHandler');
 const { iniciarJobRecordatorios } = require('./src/jobs/recordatorios');
 
@@ -47,9 +48,18 @@ app.get('/api/v1/health', (req, res) => {
   res.json({ status: 'ok', service: 'rc-arena-backend', timestamp: new Date().toISOString() });
 });
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados intentos de login. Intenta nuevamente en 15 minutos.' },
+});
+
 app.use('/api/v1/reservas', reservasRoutes(formLimiter));
 app.use('/api/v1/contacto', contactoRoutes(formLimiter));
 app.use('/api/v1/membresias', membresiasRoutes(formLimiter));
+app.use('/api/v1/admin', adminRoutes(loginLimiter));
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });

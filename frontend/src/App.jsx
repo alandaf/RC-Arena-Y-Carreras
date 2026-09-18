@@ -7,6 +7,9 @@ import Home from '@/pages/Home';
 import Reservas from '@/pages/Reservas';
 import Experiencia from '@/pages/Experiencia';
 import Contacto from '@/pages/Contacto';
+import AdminLogin from '@/pages/AdminLogin';
+import AdminDashboard from '@/pages/AdminDashboard';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function App() {
   return (
@@ -19,6 +22,15 @@ export default function App() {
             <Route path="/reservas" element={<Reservas />} />
             <Route path="/experiencia" element={<Experiencia />} />
             <Route path="/contacto" element={<Contacto />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <Footer />
