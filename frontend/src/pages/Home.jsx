@@ -145,7 +145,7 @@ const PRECIOS = {
 export default function Home() {
   const textoTypewriter = useTypewriter(FRASES);
   const [tab, setTab] = useState('sesion');
-  const pistas = useCountUp(3);
+  const pistas = useCountUp(4);
   const familias = useCountUp(1200);
   const carreras = useCountUp(8500);
   const countdown = useCountdownSabado();
