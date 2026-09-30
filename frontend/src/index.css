@@ -14,22 +14,22 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f1117;
+  background: #05070d;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e94560;
+  background: #00d9ff;
   border-radius: 999px;
 }
 
 .glass {
-  background: rgba(26, 26, 46, 0.6);
+  background: rgba(16, 22, 37, 0.6);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.12);
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #e94560, #f5a623);
+  background: linear-gradient(90deg, #00d9ff, #7b61ff);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -38,6 +38,6 @@ body {
 .speed-line {
   position: absolute;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #f5a623, transparent);
+  background: linear-gradient(90deg, transparent, #00d9ff, transparent);
   width: 40%;
 }

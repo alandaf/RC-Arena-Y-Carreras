@@ -5,13 +5,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#E94560',
-        dark: '#0F1117',
-        surface: '#1A1A2E',
-        card: '#16213E',
-        accent: '#F5A623',
-        green: '#06A77D',
-        muted: '#8892A4',
+        primary: '#00D9FF',
+        dark: '#05070D',
+        surface: '#0B0F1A',
+        card: '#101625',
+        accent: '#7B61FF',
+        green: '#22C55E',
+        muted: '#8590A6',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
@@ -27,8 +27,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 0 0 rgba(6, 167, 125, 0.6)' },
-          '50%': { boxShadow: '0 0 0 12px rgba(6, 167, 125, 0)' },
+          '0%, 100%': { boxShadow: '0 0 0 0 rgba(34, 197, 94, 0.6)' },
+          '50%': { boxShadow: '0 0 0 12px rgba(34, 197, 94, 0)' },
         },
       },
       animation: {
