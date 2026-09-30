@@ -95,7 +95,7 @@ export default function Reservas() {
         particleCount: 150,
         spread: 80,
         origin: { y: 0.6 },
-        colors: ['#00D9FF', '#7B61FF', '#22C55E'],
+        colors: ['#F7941D', '#FFB347', '#22C55E', '#FFFFFF'],
       });
       setReservaExitosa(data.reserva);
       setPaso(4);

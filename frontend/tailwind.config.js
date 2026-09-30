@@ -5,13 +5,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#00D9FF',
-        dark: '#05070D',
-        surface: '#0B0F1A',
-        card: '#101625',
-        accent: '#7B61FF',
+        primary: '#F7941D',
+        dark: '#0A0A0A',
+        surface: '#151417',
+        card: '#1C1B1F',
+        accent: '#FFB347',
         green: '#22C55E',
-        muted: '#8590A6',
+        muted: '#9C9691',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
