@@ -20,6 +20,7 @@ const NOMBRES_PISTA = {
   'arena-construccion': 'Arena de Construcción',
   'pista-1-76': 'Pista de Carreras 1:76',
   'pista-1-24-fpv': 'Pista de Carreras 1:24 FPV',
+  'futbol-1-64': 'Fútbol RC 1:64',
 };
 
 async function crearReserva(req, res, next) {

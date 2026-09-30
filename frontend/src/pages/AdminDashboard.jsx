@@ -27,6 +27,7 @@ const NOMBRES_PISTA = {
   'arena-construccion': 'Arena',
   'pista-1-76': 'Pista 1:76',
   'pista-1-24-fpv': 'Pista 1:24 FPV',
+  'futbol-1-64': 'Fútbol RC 1:64',
 };
 
 function badgeEstado(estado) {

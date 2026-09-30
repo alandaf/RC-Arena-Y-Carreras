@@ -24,7 +24,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: npx nodemon server.js
+    command: npx nodemon --legacy-watch server.js
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3001/api/v1/health"]
       interval: 10s

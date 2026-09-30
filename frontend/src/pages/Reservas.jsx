@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { format, addDays } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { Check, ChevronLeft, ChevronRight, Loader2, MessageCircle, Truck, Timer, Video } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Loader2, MessageCircle, Truck, Timer, Video, Goal } from 'lucide-react';
 import { crearReserva, obtenerDisponibilidad } from '@/lib/api';
 import { useToast } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -36,6 +36,14 @@ const TIERS = [
     precio: '$15.000',
     descripcion: 'Autos de carrera a escala 1:24 con cámara FPV',
     maxPersonas: 4,
+  },
+  {
+    id: 'futbol-1-64',
+    nombre: 'Fútbol RC 1:64',
+    icon: Goal,
+    precio: '$9.000',
+    descripcion: 'Autos a escala 1:64 para jugar fútbol por equipos',
+    maxPersonas: 8,
   },
 ];
 
@@ -156,7 +164,7 @@ export default function Reservas() {
             exit={{ opacity: 0, x: -20 }}
           >
             <h2 className="text-xl font-semibold mb-6">1. Elige tu pista</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {TIERS.map((tier) => (
                 <button
                   key={tier.id}
