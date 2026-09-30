@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Flag, Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
+import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="bg-surface border-t border-white/5 mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
         <div>
-          <div className="flex items-center gap-2 font-extrabold text-lg mb-3">
-            <Flag className="text-primary" size={22} />
+          <div className="flex items-center gap-3 font-extrabold text-lg mb-3">
+            <img src="/logo.jpg" alt="RC Arena & Carreras" className="h-12 w-12 rounded-full object-cover" />
             <span>RC Arena & Carreras</span>
           </div>
           <p className="text-muted text-sm leading-relaxed">

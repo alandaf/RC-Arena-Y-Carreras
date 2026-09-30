@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, Flag } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
@@ -33,9 +33,9 @@ export default function Navbar() {
       )}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-extrabold text-lg">
-          <Flag className="text-primary" size={24} />
-          <span>
+        <Link to="/" className="flex items-center gap-3 font-extrabold text-lg">
+          <img src="/logo.jpg" alt="RC Arena & Carreras" className="h-11 w-11 rounded-full object-cover" />
+          <span className="hidden sm:inline">
             RC Arena <span className="text-gradient">& Carreras</span>
           </span>
         </Link>
