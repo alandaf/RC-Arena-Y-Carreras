@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
@@ -12,26 +12,10 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffect(() => {
-    setOpen(false);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 transition-all duration-300',
-        scrolled ? 'glass shadow-lg' : 'bg-transparent'
-      )}
-    >
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-dark/95 backdrop-blur">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 font-extrabold text-lg">
           <img src="/logo.jpg" alt="RC Arena & Carreras" className="h-11 w-11 rounded-full object-cover" />
@@ -56,10 +40,10 @@ export default function Navbar() {
             </NavLink>
           ))}
           <Link
-            to="/reservas"
-            className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-5 py-2 rounded-full transition-colors"
+            to="/#avances"
+            className="bg-primary hover:bg-primary/90 text-ink text-sm font-bold px-5 py-2 rounded-full transition-colors"
           >
-            Reservar ahora
+            Entérate de la apertura
           </Link>
         </div>
 
@@ -98,11 +82,11 @@ export default function Navbar() {
                 </NavLink>
               ))}
               <Link
-                to="/reservas"
+                to="/#avances"
                 onClick={() => setOpen(false)}
-                className="mt-2 bg-primary text-white text-sm font-semibold px-5 py-3 rounded-full text-center"
+                className="mt-2 bg-primary text-ink text-sm font-bold px-5 py-3 rounded-full text-center"
               >
-                Reservar ahora
+                Entérate de la apertura
               </Link>
             </div>
           </motion.div>

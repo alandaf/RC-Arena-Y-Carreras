@@ -41,3 +41,16 @@ body {
   background: linear-gradient(90deg, transparent, #f7941d, transparent);
   width: 40%;
 }
+
+.checker {
+  height: 14px;
+  background-color: #fff;
+  background-image: repeating-conic-gradient(#14100c 0% 25%, transparent 0% 50%);
+  background-size: 28px 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

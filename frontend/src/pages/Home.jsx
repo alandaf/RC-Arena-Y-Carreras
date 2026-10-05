@@ -1,389 +1,272 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import useEmblaCarousel from 'embla-carousel-react';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
+  ArrowRight,
+  Coffee,
   Flag,
-  Timer,
+  Gamepad2,
+  HardHat,
+  Instagram,
+  Mail,
+  MessageCircle,
+  Music2,
+  Package,
+  PartyPopper,
+  Phone,
   Users,
-  Trophy,
-  Sparkles,
-  ChevronLeft,
-  ChevronRight,
-  Check,
+  Video,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import HeroTrack from '@/components/HeroTrack';
+import {
+  EMAIL,
+  INSTAGRAM_URL,
+  PHONE_DISPLAY,
+  TIKTOK_URL,
+  WHATSAPP_NUMBER,
+  WHATSAPP_URL,
+} from '@/lib/contact';
 
-const FRASES = ['Pura adrenalina.', 'Diversión familiar.', 'Carreras reales.', 'Sin pantallas.'];
+const focusRing =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
+const focusRingLight =
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
 
-function useTypewriter(frases, speed = 70, pausa = 1400) {
-  const [texto, setTexto] = useState('');
-  const [indiceFrase, setIndiceFrase] = useState(0);
-  const [borrando, setBorrando] = useState(false);
-
-  useEffect(() => {
-    const fraseActual = frases[indiceFrase % frases.length];
-    let timeout;
-
-    if (!borrando && texto.length < fraseActual.length) {
-      timeout = setTimeout(() => setTexto(fraseActual.slice(0, texto.length + 1)), speed);
-    } else if (!borrando && texto.length === fraseActual.length) {
-      timeout = setTimeout(() => setBorrando(true), pausa);
-    } else if (borrando && texto.length > 0) {
-      timeout = setTimeout(() => setTexto(fraseActual.slice(0, texto.length - 1)), speed / 2);
-    } else if (borrando && texto.length === 0) {
-      setBorrando(false);
-      setIndiceFrase((i) => i + 1);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [texto, borrando, indiceFrase, frases, speed, pausa]);
-
-  return texto;
-}
-
-function useCountUp(target, duracion = 1500) {
-  const [valor, setValor] = useState(0);
-
-  useEffect(() => {
-    let inicio = null;
-    let frame;
-
-    const step = (timestamp) => {
-      if (!inicio) inicio = timestamp;
-      const progreso = Math.min((timestamp - inicio) / duracion, 1);
-      setValor(Math.floor(progreso * target));
-      if (progreso < 1) frame = requestAnimationFrame(step);
-    };
-
-    frame = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(frame);
-  }, [target, duracion]);
-
-  return valor;
-}
-
-function useCountdownSabado() {
-  const [restante, setRestante] = useState({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
-
-  useEffect(() => {
-    const calcular = () => {
-      const ahora = new Date();
-      const proximoSabado = new Date(ahora);
-      const diasHastaSabado = (6 - ahora.getDay() + 7) % 7 || 7;
-      proximoSabado.setDate(ahora.getDate() + diasHastaSabado);
-      proximoSabado.setHours(10, 0, 0, 0);
-
-      const diffMs = proximoSabado - ahora;
-      const dias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diffMs / (1000 * 60)) % 60);
-      const segundos = Math.floor((diffMs / 1000) % 60);
-
-      setRestante({ dias, horas, minutos, segundos });
-    };
-
-    calcular();
-    const interval = setInterval(calcular, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return restante;
-}
-
-const FEATURES = [
+const ACTIVITIES = [
   {
-    icon: Timer,
-    titulo: 'Sesiones cronometradas',
-    descripcion: 'Circuitos con tiempos reales, tabla de posiciones y desafíos por vuelta.',
+    icon: Flag,
+    title: 'Pistas RC',
+    text: 'Dos pistas pensadas para correr con autos RC y competir en familia o entre amigos.',
   },
+  {
+    icon: Video,
+    title: 'Pista FPV 1:24',
+    text: 'Una pista para autos RC a escala 1:24 con conducción en primera persona (FPV).',
+  },
+  {
+    icon: HardHat,
+    title: 'Arena RC',
+    text: 'Una arena de desafíos para vehículos RC de construcción y actividades similares.',
+  },
+];
+
+const GROUPS = [
   {
     icon: Users,
-    titulo: '100% familiar',
-    descripcion: 'Autos y pistas para todas las edades, desde principiantes hasta expertos.',
+    title: 'En familia',
+    text: 'Grandes y chicos jugando juntos: unos corren, otros construyen y todos comparten.',
   },
   {
-    icon: Trophy,
-    titulo: 'Torneos y eventos',
-    descripcion: 'Competencias mensuales, cumpleaños y actividades corporativas.',
+    icon: Gamepad2,
+    title: 'Con amigos',
+    text: 'Desafíos para competir, probar tu pulso y pasar la tarde entre carrera y carrera.',
   },
   {
-    icon: Sparkles,
-    titulo: 'RC & Snacks',
-    descripcion: 'Zona de snacks y bebidas para recargar energía entre carrera y carrera.',
+    icon: PartyPopper,
+    title: 'En celebraciones',
+    text: 'Un plan distinto para festejar rodeado de autos y máquinas RC.',
   },
 ];
 
-const TESTIMONIOS = [
-  {
-    nombre: 'Carolina M.',
-    texto: 'Mis hijos no pidieron el celular en toda la tarde. ¡Increíble experiencia familiar!',
-  },
-  {
-    nombre: 'Rodrigo P.',
-    texto: 'La pista está impecable y el staff es súper amable. Volvemos todos los fines de semana.',
-  },
-  {
-    nombre: 'Empresa Andes SPA',
-    texto: 'Hicimos nuestro team building aquí y fue la mejor actividad corporativa del año.',
-  },
+const FOLLOW_LINKS = [
+  { href: INSTAGRAM_URL, label: 'Instagram', icon: Instagram, external: true },
+  { href: TIKTOK_URL, label: 'TikTok', icon: Music2, external: true },
+  { href: WHATSAPP_URL, label: 'WhatsApp', icon: MessageCircle, external: true },
 ];
-
-const PRECIOS = {
-  sesion: [
-    { nombre: 'Sesión Individual', precio: '$8.000', detalle: '20 minutos de pista + auto RC' },
-    { nombre: 'Pack Familiar', precio: '$25.000', detalle: 'Hasta 4 personas, 45 minutos' },
-    { nombre: 'Cumpleaños RC', precio: '$60.000', detalle: 'Pista exclusiva 2 horas + snacks' },
-  ],
-  membresia: [
-    { nombre: 'Membresía Mensual', precio: '$18.000/mes', detalle: 'Acceso ilimitado en horario regular' },
-    { nombre: 'Membresía Trimestral', precio: '$48.000', detalle: 'Ahorra 11% + auto RC de cortesía' },
-    { nombre: 'Membresía Anual', precio: '$170.000', detalle: 'Ahorra 21% + eventos exclusivos' },
-  ],
-};
 
 export default function Home() {
-  const textoTypewriter = useTypewriter(FRASES);
-  const [tab, setTab] = useState('sesion');
-  const pistas = useCountUp(4);
-  const familias = useCountUp(1200);
-  const carreras = useCountUp(8500);
-  const countdown = useCountdownSabado();
+  const { hash } = useLocation();
 
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-
-  const scrollPrev = () => emblaApi && emblaApi.scrollPrev();
-  const scrollNext = () => emblaApi && emblaApi.scrollNext();
-
-  const stats = useMemo(
-    () => [
-      { valor: pistas, sufijo: '', label: 'Pistas temáticas' },
-      { valor: familias, sufijo: '+', label: 'Familias felices' },
-      { valor: carreras, sufijo: '+', label: 'Carreras corridas' },
-    ],
-    [pistas, familias, carreras]
-  );
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(hash.slice(1));
+    if (target) target.scrollIntoView();
+  }, [hash]);
 
   return (
     <div>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-dark py-24 md:py-36">
-        <div className="absolute inset-0 pointer-events-none">
-          <span className="speed-line top-1/4 animate-speedlines" style={{ animationDelay: '0s' }} />
-          <span className="speed-line top-1/2 animate-speedlines" style={{ animationDelay: '0.4s' }} />
-          <span className="speed-line top-3/4 animate-speedlines" style={{ animationDelay: '0.8s' }} />
-        </div>
-
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.span
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 glass px-4 py-1.5 rounded-full text-xs font-semibold text-accent mb-6"
-          >
-            <Flag size={14} /> Curauma, Valparaíso
-          </motion.span>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight"
-          >
-            RC Arena <span className="text-gradient">& Carreras</span>
-          </motion.h1>
-
-          <p className="mt-4 text-lg sm:text-xl text-muted h-8">
-            {textoTypewriter}
-            <span className="animate-pulse">|</span>
-          </p>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-6 max-w-2xl mx-auto text-muted"
-          >
-            La única pista RC familiar de Curauma. Fuera de la pantalla, pura acción.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <Link
-              to="/reservas"
-              className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full transition-transform hover:scale-105"
+      <section className="relative overflow-hidden bg-cream text-ink" aria-labelledby="hero-title">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-28 -right-28 h-[30rem] w-[30rem] rounded-full bg-primary/30 blur-3xl"
+        />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-20">
+          <div>
+            <p className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-1.5 text-xs font-semibold text-white sm:text-sm">
+              <span className="h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
+              Proyecto en desarrollo · Región de Valparaíso
+            </p>
+            <h1
+              id="hero-title"
+              className="mt-5 text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl"
             >
-              Reserva tu carrera
-            </Link>
-            <Link
-              to="/experiencia"
-              className="glass px-8 py-3 rounded-full font-semibold hover:text-accent transition-colors"
-            >
-              Ver experiencia
-            </Link>
-          </motion.div>
-
-          <div className="mt-16 grid grid-cols-3 gap-6 max-w-2xl mx-auto">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <p className="text-3xl sm:text-4xl font-extrabold text-gradient">
-                  {s.valor}
-                  {s.sufijo}
-                </p>
-                <p className="text-xs sm:text-sm text-muted mt-1">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl font-extrabold">¿Por qué RC Arena?</h2>
-          <p className="text-muted mt-2">Todo lo que necesitas para una tarde inolvidable</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {FEATURES.map((f, i) => (
-            <motion.div
-              key={f.titulo}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="glass rounded-2xl p-6 hover:-translate-y-1 transition-transform"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4">
-                <f.icon className="text-primary" size={22} />
-              </div>
-              <h3 className="font-semibold mb-2">{f.titulo}</h3>
-              <p className="text-sm text-muted">{f.descripcion}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* PRECIOS */}
-      <section className="bg-surface py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-extrabold">Precios</h2>
-            <p className="text-muted mt-2">Elige entre una sesión puntual o una membresía</p>
-
-            <div className="inline-flex glass rounded-full p-1 mt-6">
-              <button
-                type="button"
-                onClick={() => setTab('sesion')}
-                className={cn(
-                  'px-5 py-2 rounded-full text-sm font-semibold transition-colors',
-                  tab === 'sesion' ? 'bg-primary text-white' : 'text-muted'
-                )}
+              Tu próxima carrera empieza aquí
+            </h1>
+            <p className="mt-4 text-xl font-extrabold text-rust sm:text-2xl">
+              Construye. Compite. Comparte.
+            </p>
+            <p className="mt-4 max-w-xl text-base text-ink/80 sm:text-lg">
+              Un nuevo panorama familiar con autos RC, desafíos y café. Estamos preparando el proyecto
+              en la Región de Valparaíso.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a
+                href="#experiencia"
+                className={`inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-7 py-3 font-bold text-ink transition-transform hover:scale-[1.03] ${focusRing}`}
               >
-                Sesión
-              </button>
-              <button
-                type="button"
-                onClick={() => setTab('membresia')}
-                className={cn(
-                  'px-5 py-2 rounded-full text-sm font-semibold transition-colors',
-                  tab === 'membresia' ? 'bg-primary text-white' : 'text-muted'
-                )}
+                Conoce el proyecto <ArrowRight size={18} aria-hidden="true" />
+              </a>
+              <a
+                href="#avances"
+                className={`inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-ink px-7 py-3 text-center font-bold text-ink transition-colors hover:bg-ink hover:text-white ${focusRing}`}
               >
-                Membresía
-              </button>
+                Síguenos para enterarte de la apertura
+              </a>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {PRECIOS[tab].map((plan) => (
-              <div key={plan.nombre} className="card bg-card rounded-2xl p-6 border border-white/5">
-                <h3 className="font-semibold text-lg">{plan.nombre}</h3>
-                <p className="text-3xl font-extrabold text-accent my-3">{plan.precio}</p>
-                <p className="text-sm text-muted flex items-start gap-2">
-                  <Check size={16} className="text-green mt-0.5 shrink-0" />
-                  {plan.detalle}
-                </p>
-                <Link
-                  to="/reservas"
-                  className="mt-6 block text-center bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 rounded-full transition-colors"
-                >
-                  Elegir plan
-                </Link>
-              </div>
-            ))}
+          <div>
+            <HeroTrack />
+            <p className="mt-3 text-center text-xs text-ink/70">
+              Ilustración referencial del concepto. Todavía no hay fotos del local.
+            </p>
           </div>
         </div>
+        <div className="checker" aria-hidden="true" />
       </section>
 
-      {/* TESTIMONIOS */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <h2 className="text-3xl font-extrabold text-center mb-10">Lo que dicen nuestras familias</h2>
+      <section id="experiencia" className="scroll-mt-20 bg-sand py-16 text-ink sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Tres formas de vivir la experiencia</h2>
+            <p className="mt-3 text-ink/80">
+              Esto es lo que estamos preparando: pistas para competir, una pista FPV y una arena para
+              construir.
+            </p>
+          </div>
 
-        <div className="relative">
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex">
-              {TESTIMONIOS.map((t) => (
-                <div key={t.nombre} className="flex-[0_0_100%] px-2">
-                  <div className="glass rounded-2xl p-8 text-center">
-                    <p className="text-lg text-muted italic">"{t.texto}"</p>
-                    <p className="mt-4 font-semibold text-accent">{t.nombre}</p>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {ACTIVITIES.map(({ icon: Icon, title, text }, index) => (
+              <article
+                key={title}
+                className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
+                    <Icon size={24} aria-hidden="true" />
                   </div>
+                  <span className="text-sm font-extrabold text-rust" aria-hidden="true">
+                    0{index + 1}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={scrollPrev}
-            className="absolute -left-4 sm:-left-10 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center"
-            aria-label="Anterior"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            type="button"
-            onClick={scrollNext}
-            className="absolute -right-4 sm:-right-10 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full glass flex items-center justify-center"
-            aria-label="Siguiente"
-          >
-            <ChevronRight size={18} />
-          </button>
-        </div>
-      </section>
-
-      {/* COUNTDOWN */}
-      <section className="bg-surface py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-extrabold mb-2">Próxima carrera grupal</h2>
-          <p className="text-muted mb-10">Todos los sábados desde las 10:00 AM</p>
-
-          <div className="grid grid-cols-4 gap-3 sm:gap-6 max-w-lg mx-auto">
-            {[
-              { valor: countdown.dias, label: 'Días' },
-              { valor: countdown.horas, label: 'Horas' },
-              { valor: countdown.minutos, label: 'Min' },
-              { valor: countdown.segundos, label: 'Seg' },
-            ].map((c) => (
-              <div key={c.label} className="glass rounded-2xl py-5">
-                <p className="text-2xl sm:text-4xl font-extrabold text-gradient">
-                  {String(c.valor).padStart(2, '0')}
-                </p>
-                <p className="text-xs text-muted mt-1">{c.label}</p>
-              </div>
+                <h3 className="mt-5 text-xl font-extrabold">{title}</h3>
+                <p className="mt-2 text-ink/80">{text}</p>
+              </article>
             ))}
           </div>
 
-          <Link
-            to="/reservas"
-            className="inline-block mt-10 bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-full transition-transform hover:scale-105"
-          >
-            Reservar mi cupo
-          </Link>
+          <p className="mt-8 text-center text-sm text-ink/70">
+            Estas actividades son parte del proyecto en preparación; todavía no están abiertas al público.
+          </p>
+        </div>
+      </section>
+
+      <section id="panorama" className="scroll-mt-20 bg-ink text-white">
+        <div className="checker" aria-hidden="true" />
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-extrabold sm:text-4xl">
+              Un panorama para <span className="text-primary">compartir</span>
+            </h2>
+            <p className="mt-3 text-white/80">
+              Pensado para que cada visita sea un plan entretenido para todos, sin pantallas de por medio.
+            </p>
+          </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {GROUPS.map(({ icon: Icon, title, text }) => (
+              <article key={title} className="rounded-2xl border border-white/15 bg-white/5 p-6">
+                <Icon className="text-primary" size={28} aria-hidden="true" />
+                <h3 className="mt-4 text-xl font-extrabold">{title}</h3>
+                <p className="mt-2 text-white/80">{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="cafeteria" className="scroll-mt-20 bg-cream py-16 text-ink sm:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+          <div className="rounded-3xl bg-sand p-8 sm:p-10">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-ink">
+              <Coffee size={40} aria-hidden="true" />
+            </div>
+            <ul className="mt-6 flex flex-wrap gap-2 text-sm font-semibold">
+              <li className="rounded-full bg-white px-4 py-1.5">Café en vaso desechable</li>
+              <li className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-1.5">
+                <Package size={14} aria-hidden="true" /> Productos envasados
+              </li>
+              <li className="rounded-full bg-white px-4 py-1.5">Autoservicio</li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Cafetería de autoservicio</h2>
+            <p className="mt-4 max-w-lg text-lg text-ink/80">
+              Un rincón para recargar energía entre carrera y carrera: café en vasos desechables y
+              productos envasados para acompañar la visita.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="avances" className="scroll-mt-20 bg-primary py-16 text-ink sm:py-20">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-ink p-8 text-white shadow-2xl sm:p-12">
+            <p className="inline-flex items-center rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-ink sm:text-sm">
+              Estado actual: buscando local en la Región de Valparaíso
+            </p>
+            <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">Estamos preparando la salida</h2>
+            <p className="mt-4 max-w-2xl text-lg text-white/80">
+              El proyecto está en desarrollo. Todavía no hay fecha de apertura ni reservas habilitadas;
+              cuando tengamos novedades las compartiremos en nuestras redes.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              {FOLLOW_LINKS.map(({ href, label, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-2.5 font-semibold transition-colors hover:bg-white/20 ${focusRingLight}`}
+                >
+                  <Icon size={18} aria-hidden="true" />
+                  {label}
+                </a>
+              ))}
+              <Link
+                to="/contacto"
+                className={`inline-flex min-h-[48px] items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-bold text-ink transition-transform hover:scale-[1.03] ${focusRingLight}`}
+              >
+                Escríbenos <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+            </div>
+
+            <ul className="mt-8 flex flex-col gap-2 border-t border-white/15 pt-6 text-sm text-white/80 sm:flex-row sm:gap-8">
+              <li className="flex items-center gap-2">
+                <Phone size={16} className="text-primary" aria-hidden="true" />
+                <a href={`tel:+${WHATSAPP_NUMBER}`} className="hover:text-white">
+                  {PHONE_DISPLAY}
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail size={16} className="text-primary" aria-hidden="true" />
+                <a href={`mailto:${EMAIL}`} className="hover:text-white">
+                  {EMAIL}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
     </div>

@@ -12,6 +12,10 @@ export default {
         accent: '#FFB347',
         green: '#22C55E',
         muted: '#9C9691',
+        cream: '#FFF8EE',
+        sand: '#F6E7D0',
+        ink: '#14100C',
+        rust: '#B84A0A',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

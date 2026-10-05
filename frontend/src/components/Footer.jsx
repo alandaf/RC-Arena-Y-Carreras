@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, MapPin, Phone, Mail } from 'lucide-react';
+import { Instagram, Music2, MapPin, Phone, Mail } from 'lucide-react';
+import { EMAIL, INSTAGRAM_URL, PHONE_DISPLAY, TIKTOK_URL } from '@/lib/contact';
 
 export default function Footer() {
   return (
-    <footer className="bg-surface border-t border-white/5 mt-16">
+    <footer className="bg-surface border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
         <div>
           <div className="flex items-center gap-3 font-extrabold text-lg mb-3">
@@ -11,11 +12,11 @@ export default function Footer() {
             <span>RC Arena & Carreras</span>
           </div>
           <p className="text-muted text-sm leading-relaxed">
-            La única pista RC familiar de Curauma. Fuera de la pantalla, pura acción.
+            Construye. Compite. Comparte. Proyecto en preparación en la Región de Valparaíso.
           </p>
           <div className="flex gap-3 mt-4">
             <a
-              href="https://instagram.com"
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noreferrer"
               className="w-9 h-9 rounded-full glass flex items-center justify-center hover:text-accent"
@@ -24,13 +25,13 @@ export default function Footer() {
               <Instagram size={16} />
             </a>
             <a
-              href="https://facebook.com"
+              href={TIKTOK_URL}
               target="_blank"
               rel="noreferrer"
               className="w-9 h-9 rounded-full glass flex items-center justify-center hover:text-accent"
-              aria-label="Facebook"
+              aria-label="TikTok"
             >
-              <Facebook size={16} />
+              <Music2 size={16} />
             </a>
           </div>
         </div>
@@ -50,15 +51,15 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-muted">
             <li className="flex items-center gap-2">
               <MapPin size={16} className="text-primary shrink-0" />
-              Curauma, Valparaíso, Chile
+              Región de Valparaíso (buscando local)
             </li>
             <li className="flex items-center gap-2">
               <Phone size={16} className="text-primary shrink-0" />
-              +56 9 7623 9238
+              {PHONE_DISPLAY}
             </li>
             <li className="flex items-center gap-2">
               <Mail size={16} className="text-primary shrink-0" />
-              ventas@simarp.net
+              {EMAIL}
             </li>
           </ul>
         </div>
