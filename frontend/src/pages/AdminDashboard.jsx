@@ -158,10 +158,15 @@ function TablaContactos() {
                     B2B{c.empresa ? ` · ${c.empresa}` : ''}
                   </span>
                 )}
+                {c.tipo === 'evento' && (
+                  <span className="ml-2 text-xs bg-green/20 text-green px-2 py-0.5 rounded-full">
+                    Cotización de evento
+                  </span>
+                )}
               </p>
               <p className="text-muted text-xs">{c.email}</p>
               <p className="text-sm mt-2 font-medium">{c.asunto}</p>
-              <p className="text-sm text-muted mt-1">{c.mensaje}</p>
+              <p className="text-sm text-muted mt-1 whitespace-pre-line">{c.mensaje}</p>
             </div>
             <button
               type="button"

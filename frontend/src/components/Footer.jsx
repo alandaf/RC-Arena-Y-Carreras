@@ -12,7 +12,7 @@ export default function Footer() {
             <span>RC Arena & Carreras</span>
           </div>
           <p className="text-muted text-sm leading-relaxed">
-            Construye. Compite. Comparte. Proyecto en preparación en la Región de Valparaíso.
+            Construye. Compite. Comparte. Carreras RC y arena para cumpleaños y eventos en la Región de Valparaíso.
           </p>
           <div className="flex gap-3 mt-4">
             <a
@@ -40,8 +40,8 @@ export default function Footer() {
           <h3 className="font-semibold mb-3 text-sm uppercase tracking-wide text-accent">Navegación</h3>
           <ul className="space-y-2 text-sm text-muted">
             <li><Link to="/" className="hover:text-white">Inicio</Link></li>
-            <li><Link to="/reservas" className="hover:text-white">Reservas</Link></li>
-            <li><Link to="/experiencia" className="hover:text-white">Experiencia</Link></li>
+            <li><Link to="/#actividades" className="hover:text-white">Actividades</Link></li>
+            <li><Link to="/#cotizar" className="hover:text-white">Cotiza tu evento</Link></li>
             <li><Link to="/contacto" className="hover:text-white">Contacto</Link></li>
           </ul>
         </div>
@@ -51,7 +51,7 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-muted">
             <li className="flex items-center gap-2">
               <MapPin size={16} className="text-primary shrink-0" />
-              Región de Valparaíso (buscando local)
+              Región de Valparaíso
             </li>
             <li className="flex items-center gap-2">
               <Phone size={16} className="text-primary shrink-0" />

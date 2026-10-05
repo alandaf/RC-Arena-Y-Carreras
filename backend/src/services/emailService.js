@@ -11,11 +11,21 @@ const transporter = nodemailer.createTransport({
     : undefined,
 });
 
+function escapeHtml(valor) {
+  return String(valor ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\r?\n/g, '<br />');
+}
+
 function cargarTemplate(nombreArchivo, variables = {}) {
   const rutaTemplate = path.join(__dirname, '..', 'templates', nombreArchivo);
   let html = fs.readFileSync(rutaTemplate, 'utf-8');
   for (const [clave, valor] of Object.entries(variables)) {
-    html = html.replaceAll(`{{${clave}}}`, valor ?? '');
+    html = html.replaceAll(`{{${clave}}}`, escapeHtml(valor));
   }
   return html;
 }

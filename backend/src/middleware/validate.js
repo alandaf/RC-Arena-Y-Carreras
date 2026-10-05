@@ -32,8 +32,9 @@ const contactoSchema = z.object({
   email: z.string().email('Email inválido'),
   asunto: z.string().min(2).max(200),
   mensaje: z.string().min(5).max(2000),
-  tipo: z.enum(['general', 'b2b']).default('general'),
+  tipo: z.enum(['general', 'b2b', 'evento']).default('general'),
   empresa: z.string().max(200).optional().nullable(),
+  telefono: z.string().max(30).optional().nullable(),
 });
 
 const membresiaSchema = z.object({

@@ -6,10 +6,36 @@ import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
   { to: '/', label: 'Inicio' },
-  { to: '/reservas', label: 'Reservas' },
-  { to: '/experiencia', label: 'Experiencia' },
+  { to: '/#actividades', label: 'Actividades' },
+  { to: '/#como-funciona', label: 'Cómo funciona' },
   { to: '/contacto', label: 'Contacto' },
 ];
+
+function NavItem({ link, onClick, desktop }) {
+  const base = desktop
+    ? 'text-sm font-medium transition-colors hover:text-accent'
+    : 'py-2 px-3 rounded-lg text-sm font-medium';
+  const active = desktop ? 'text-accent' : 'bg-primary/20 text-accent';
+
+  if (link.to.includes('#')) {
+    return (
+      <Link to={link.to} onClick={onClick} className={cn(base, 'text-muted')}>
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <NavLink
+      to={link.to}
+      end
+      onClick={onClick}
+      className={({ isActive }) => cn(base, isActive ? active : 'text-muted')}
+    >
+      {link.label}
+    </NavLink>
+  );
+}
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -26,24 +52,13 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                cn(
-                  'text-sm font-medium transition-colors hover:text-accent',
-                  isActive ? 'text-accent' : 'text-muted'
-                )
-              }
-            >
-              {link.label}
-            </NavLink>
+            <NavItem key={link.to} link={link} desktop />
           ))}
           <Link
-            to="/#avances"
+            to="/#cotizar"
             className="bg-primary hover:bg-primary/90 text-ink text-sm font-bold px-5 py-2 rounded-full transition-colors"
           >
-            Entérate de la apertura
+            Cotiza tu evento
           </Link>
         </div>
 
@@ -52,6 +67,7 @@ export default function Navbar() {
           className="md:hidden text-white"
           onClick={() => setOpen((v) => !v)}
           aria-label="Abrir menú"
+          aria-expanded={open}
         >
           {open ? <X size={26} /> : <Menu size={26} />}
         </button>
@@ -67,26 +83,14 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1 px-4 py-4">
               {NAV_LINKS.map((link) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  onClick={() => setOpen(false)}
-                  className={({ isActive }) =>
-                    cn(
-                      'py-2 px-3 rounded-lg text-sm font-medium',
-                      isActive ? 'bg-primary/20 text-accent' : 'text-muted'
-                    )
-                  }
-                >
-                  {link.label}
-                </NavLink>
+                <NavItem key={link.to} link={link} onClick={() => setOpen(false)} />
               ))}
               <Link
-                to="/#avances"
+                to="/#cotizar"
                 onClick={() => setOpen(false)}
                 className="mt-2 bg-primary text-ink text-sm font-bold px-5 py-3 rounded-full text-center"
               >
-                Entérate de la apertura
+                Cotiza tu evento
               </Link>
             </div>
           </motion.div>

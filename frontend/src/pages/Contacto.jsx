@@ -144,8 +144,8 @@ export default function Contacto() {
             <div className="flex items-start gap-3">
               <MapPin className="text-primary shrink-0 mt-0.5" size={20} />
               <div>
-                <p className="font-semibold text-sm">Ubicación</p>
-                <p className="text-muted text-sm">Curauma, Valparaíso, Chile</p>
+                <p className="font-semibold text-sm">Cobertura</p>
+                <p className="text-muted text-sm">Eventos en la Región de Valparaíso</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -164,17 +164,6 @@ export default function Contacto() {
             </div>
           </div>
 
-          <div className="glass rounded-2xl overflow-hidden h-64">
-            <iframe
-              title="Mapa RC Arena & Carreras"
-              src="https://www.google.com/maps?q=Curauma,Valparaiso,Chile&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
         </div>
       </div>
 

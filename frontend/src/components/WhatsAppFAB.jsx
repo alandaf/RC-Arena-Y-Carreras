@@ -1,7 +1,7 @@
 import { MessageCircle } from 'lucide-react';
 
 const WHATSAPP_NUMBER = '56976239238';
-const DEFAULT_MESSAGE = 'Hola! Quiero más información sobre RC Arena & Carreras 🏎️';
+const DEFAULT_MESSAGE = 'Hola! Quiero cotizar un evento con RC Arena & Carreras 🏎️';
 
 export default function WhatsAppFAB() {
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DEFAULT_MESSAGE)}`;
