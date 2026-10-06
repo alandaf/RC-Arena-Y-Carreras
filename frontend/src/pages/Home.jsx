@@ -19,6 +19,7 @@ import {
   Truck,
   Video,
 } from 'lucide-react';
+import FootballIllustration from '@/components/FootballIllustration';
 import QuoteForm from '@/components/QuoteForm';
 import {
   EMAIL,
@@ -70,6 +71,7 @@ const ACTIVITIES = [
     title: 'Fútbol con autos 1:64',
     status: 'soon',
     text: 'Partidos de fútbol jugados con autos RC a escala 1:64.',
+    illustration: FootballIllustration,
   },
   {
     icon: Video,
@@ -197,7 +199,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, illustration: Illustration }) => (
               <article
                 key={title}
                 className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1"
@@ -211,6 +213,14 @@ export default function Home() {
                     loading="lazy"
                     className="mb-5 aspect-[4/3] w-full rounded-xl object-cover"
                   />
+                )}
+                {Illustration && (
+                  <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-xl">
+                    <Illustration />
+                    <span className="absolute bottom-2 right-2 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
+                      Ilustración
+                    </span>
+                  </div>
                 )}
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
