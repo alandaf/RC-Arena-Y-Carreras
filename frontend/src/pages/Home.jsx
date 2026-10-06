@@ -100,7 +100,8 @@ const ACTIVITIES = [
     icon: Glasses,
     title: 'Realidad virtual (VR)',
     status: 'later',
-    text: 'Manejo de los autos RC en primera persona con lentes VR y control remoto. Contará con 2 estaciones.',
+    space: '5,8 × 2,8 m (la misma pista del FPV)',
+    text: 'Manejo de los autos RC en primera persona con lentes VR y control remoto, en la misma pista que el FPV. Contará con 2 estaciones.',
     image: {
       src: '/fotos/vr-fpv.webp',
       width: 1200,
