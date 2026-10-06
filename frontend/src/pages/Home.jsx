@@ -77,7 +77,13 @@ const ACTIVITIES = [
     icon: Video,
     title: 'Pista FPV',
     status: 'later',
-    text: 'Autos RC con conducción en primera persona (FPV). Contará con 2 estaciones.',
+    text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona desde una estación con pantalla, volante y pedales. Contará con 2 estaciones.',
+    image: {
+      src: '/fotos/fpv-autos.webp',
+      width: 1200,
+      height: 900,
+      alt: 'Dos autos RC de carreras con cámara a bordo, uno azul y otro gris',
+    },
   },
   {
     icon: Glasses,
