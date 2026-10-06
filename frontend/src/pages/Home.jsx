@@ -19,8 +19,6 @@ import {
   Truck,
   Video,
 } from 'lucide-react';
-import FootballIllustration from '@/components/FootballIllustration';
-import VRIllustration from '@/components/VRIllustration';
 import QuoteForm from '@/components/QuoteForm';
 import {
   EMAIL,
@@ -72,7 +70,13 @@ const ACTIVITIES = [
     title: 'Fútbol con autos 1:64',
     status: 'soon',
     text: 'Partidos de fútbol jugados con autos RC a escala 1:64.',
-    illustration: FootballIllustration,
+    image: {
+      src: '/fotos/futbol-rc.webp',
+      width: 1200,
+      height: 876,
+      illustration: true,
+      alt: 'Ilustración de una mesa de fútbol con autos RC pequeños rojos y verdes, dos arcos y una pelota, sobre caballetes plegables',
+    },
   },
   {
     icon: Video,
@@ -92,7 +96,13 @@ const ACTIVITIES = [
     title: 'Realidad virtual (VR)',
     status: 'later',
     text: 'Manejo de los autos RC en primera persona con lentes VR y control remoto. Contará con 2 estaciones.',
-    illustration: VRIllustration,
+    image: {
+      src: '/fotos/vr-fpv.webp',
+      width: 1200,
+      height: 876,
+      illustration: true,
+      alt: 'Ilustración de un personaje de caricatura con lentes VR y control remoto, manejando un auto RC con cámara sobre una pista',
+    },
   },
 ];
 
@@ -208,7 +218,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, illustration: Illustration, wide }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide }) => (
               <article
                 key={title}
                 className={`rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 ${
@@ -234,21 +244,20 @@ export default function Home() {
                   </a>
                 )}
                 {image && !wide && (
-                  <img
-                    src={image.src}
-                    width={image.width}
-                    height={image.height}
-                    alt={image.alt}
-                    loading="lazy"
-                    className="mb-5 aspect-[4/3] w-full rounded-xl object-cover"
-                  />
-                )}
-                {Illustration && (
-                  <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-xl">
-                    <Illustration />
-                    <span className="absolute bottom-2 right-2 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
-                      Ilustración
-                    </span>
+                  <div className="relative mb-5">
+                    <img
+                      src={image.src}
+                      width={image.width}
+                      height={image.height}
+                      alt={image.alt}
+                      loading="lazy"
+                      className="aspect-[4/3] w-full rounded-xl object-cover"
+                    />
+                    {image.illustration && (
+                      <span className="absolute bottom-2 right-2 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
+                        Ilustración
+                      </span>
+                    )}
                   </div>
                 )}
                 <div className={wide ? 'md:flex-1' : ''}>
