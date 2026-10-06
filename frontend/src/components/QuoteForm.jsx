@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { CircleCheck, Loader2, Send } from 'lucide-react';
 import { enviarContacto } from '@/lib/api';
 import { useToast } from '@/lib/utils';
+import Field, { inputClass } from '@/components/FormField';
 
 const EVENT_TYPES = [
   'Cumpleaños',
@@ -34,25 +35,6 @@ const schema = z.object({
   interes: z.array(z.string()).optional(),
   comentarios: z.string().max(1000, 'Máximo 1000 caracteres').optional(),
 });
-
-const inputClass =
-  'w-full rounded-xl border border-ink/25 bg-white px-4 py-3 text-ink placeholder:text-ink/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ink';
-
-function Field({ id, label, error, children }) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-semibold text-ink">
-        {label}
-      </label>
-      {children}
-      {error && (
-        <p id={`${id}-error`} role="alert" className="mt-1 text-sm font-medium text-red-700">
-          {error}
-        </p>
-      )}
-    </div>
-  );
-}
 
 export default function QuoteForm() {
   const { toast } = useToast();
