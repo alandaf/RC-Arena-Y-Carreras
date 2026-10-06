@@ -286,6 +286,39 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="experiencia-fpv-vr" className="scroll-mt-20 bg-cream py-16 text-ink sm:py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+          <div>
+            <span className="inline-flex rounded-full bg-ink/10 px-3 py-1 text-xs font-bold">Próximamente</span>
+            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">Maneja un auto RC como si fueras el piloto</h2>
+            <p className="mt-4 text-lg text-ink/80">
+              Dos estaciones con pantalla y volante, y dos con lentes VR y control remoto, todas en la
+              misma pista.
+            </p>
+            <a
+              href="#cotizar"
+              className={`mt-6 inline-flex min-h-[48px] items-center justify-center gap-2 whitespace-nowrap rounded-full bg-primary px-7 py-3 font-bold text-ink transition-transform hover:scale-[1.03] ${focusRing}`}
+            >
+              Cotiza tu evento <ArrowRight size={18} aria-hidden="true" />
+            </a>
+          </div>
+
+          <div className="relative">
+            <img
+              src="/fotos/fpv-vr-experiencia.webp"
+              width={1200}
+              height={876}
+              alt="Ilustración de una chica con lentes VR y control remoto y un hombre con gorra roja al volante frente a un monitor con una pista, rodeados de amigos que celebran"
+              loading="lazy"
+              className="w-full rounded-3xl border-4 border-ink object-cover shadow-2xl"
+            />
+            <span className="absolute bottom-3 right-3 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
+              Ilustración
+            </span>
+          </div>
+        </div>
+      </section>
+
       <section id="ideal-para" className="scroll-mt-20 bg-ink text-white">
         <div className="checker" aria-hidden="true" />
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
