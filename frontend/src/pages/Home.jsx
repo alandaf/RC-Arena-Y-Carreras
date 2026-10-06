@@ -19,7 +19,6 @@ import {
   Truck,
   Video,
 } from 'lucide-react';
-import HeroTrack from '@/components/HeroTrack';
 import QuoteForm from '@/components/QuoteForm';
 import {
   EMAIL,
@@ -47,12 +46,24 @@ const ACTIVITIES = [
     title: 'Arena RC',
     status: 'available',
     text: 'Una arena de desafíos para vehículos RC de construcción: mover, cargar y construir sobre arena.',
+    image: {
+      src: '/fotos/arena-rc.webp',
+      width: 800,
+      height: 600,
+      alt: 'Camión, topadora, cargador, excavadora y grúa RC sobre la arena, con sus controles alineados en el borde',
+    },
   },
   {
     icon: Flag,
     title: 'Carreras 1:76',
     status: 'available',
     text: 'Pista de carreras para autos RC a escala 1:76, para competir en familia o entre amigos.',
+    image: {
+      src: '/fotos/pista-1-76.webp',
+      width: 500,
+      height: 375,
+      alt: 'Pista de carreras 1:76 sobre una alfombra de circuito, con autos y controles',
+    },
   },
   {
     icon: Goal,
@@ -155,10 +166,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div>
-            <HeroTrack />
-            <p className="mt-3 text-center text-xs text-ink/70">Ilustración referencial del concepto.</p>
-          </div>
+          <figure className="relative">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-3 rotate-2 rounded-[2rem] bg-primary"
+            />
+            <img
+              src="/fotos/arena-y-pista.webp"
+              width={1280}
+              height={960}
+              alt="Arena RC con camiones, excavadora y grúa a control remoto sobre arena y, al fondo, una pista de carreras 1:76"
+              fetchpriority="high"
+              className="relative w-full rounded-3xl border-4 border-ink object-cover shadow-2xl"
+            />
+            <figcaption className="relative mt-5 text-center text-sm font-medium text-ink/80">
+              Nuestra arena RC y la pista de carreras 1:76, listas para llevar a tu evento.
+            </figcaption>
+          </figure>
         </div>
         <div className="checker" aria-hidden="true" />
       </section>
@@ -173,11 +197,21 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image }) => (
               <article
                 key={title}
                 className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1"
               >
+                {image && (
+                  <img
+                    src={image.src}
+                    width={image.width}
+                    height={image.height}
+                    alt={image.alt}
+                    loading="lazy"
+                    className="mb-5 aspect-[4/3] w-full rounded-xl object-cover"
+                  />
+                )}
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
                     <Icon size={24} aria-hidden="true" />
