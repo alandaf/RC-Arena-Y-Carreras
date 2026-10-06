@@ -15,6 +15,7 @@ import {
   Music2,
   PartyPopper,
   Phone,
+  Ruler,
   School,
   Truck,
   Video,
@@ -45,6 +46,7 @@ const ACTIVITIES = [
     icon: HardHat,
     title: 'Arena RC',
     status: 'available',
+    space: 'aprox. 1,5 × 1,5 m',
     text: 'Una arena de desafíos para vehículos RC de construcción: mover, cargar y construir sobre arena.',
     image: {
       src: '/fotos/arena-rc.webp',
@@ -57,6 +59,7 @@ const ACTIVITIES = [
     icon: Flag,
     title: 'Carreras 1:76',
     status: 'available',
+    space: '1,8 × 1,2 m',
     text: 'Pista de carreras para autos RC a escala 1:76, para competir en familia o entre amigos.',
     image: {
       src: '/fotos/pista-1-76.webp',
@@ -69,6 +72,7 @@ const ACTIVITIES = [
     icon: Goal,
     title: 'Fútbol con autos 1:64',
     status: 'soon',
+    space: '0,8 × 1,2 m',
     text: 'Partidos de fútbol jugados con autos RC a escala 1:64.',
     image: {
       src: '/fotos/futbol-rc.webp',
@@ -82,6 +86,7 @@ const ACTIVITIES = [
     icon: Video,
     title: 'Pista FPV',
     status: 'later',
+    space: '5,8 × 2,8 m',
     text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona. Contará con 2 estaciones con pantalla y volante.',
     wide: true,
     image: {
@@ -218,7 +223,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide, space }) => (
               <article
                 key={title}
                 className={`rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 ${
@@ -271,11 +276,21 @@ export default function Home() {
                   </div>
                   <h3 className="mt-5 text-xl font-extrabold">{title}</h3>
                   <p className="mt-2 text-ink/80">{text}</p>
+                  {space && (
+                    <p className="mt-3 inline-flex items-center gap-2 rounded-lg bg-sand px-3 py-1.5 text-sm font-semibold text-ink">
+                      <Ruler size={16} className="text-rust" aria-hidden="true" />
+                      Superficie de juego: {space}
+                    </p>
+                  )}
                   {wide && <p className="mt-3 text-sm text-ink/60">Toca la imagen para verla en grande.</p>}
                 </div>
               </article>
             ))}
           </div>
+
+          <p className="mt-8 text-center text-sm text-ink/70">
+            Las medidas corresponden a la superficie de juego; deja espacio libre alrededor para los jugadores.
+          </p>
         </div>
       </section>
 
