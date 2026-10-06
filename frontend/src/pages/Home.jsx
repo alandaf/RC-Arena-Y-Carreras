@@ -101,7 +101,7 @@ const ACTIVITIES = [
       width: 1200,
       height: 876,
       illustration: true,
-      alt: 'Ilustración de un personaje de caricatura con lentes VR y control remoto, manejando un auto RC con cámara sobre una pista',
+      alt: 'Ilustración de un personaje de caricatura con lentes VR y control remoto, manejando un auto RC con cámara sobre una pista modular de fichas oscuras con muros grises y curvas rojas',
     },
   },
 ];
