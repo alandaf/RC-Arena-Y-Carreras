@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   Briefcase,
@@ -143,14 +142,6 @@ const FOLLOW_LINKS = [
 ];
 
 export default function Home() {
-  const { hash } = useLocation();
-
-  useEffect(() => {
-    if (!hash) return;
-    const target = document.getElementById(hash.slice(1));
-    if (target) target.scrollIntoView();
-  }, [hash]);
-
   return (
     <div>
       <section className="relative overflow-hidden bg-cream text-ink" aria-labelledby="hero-title">

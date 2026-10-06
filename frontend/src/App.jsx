@@ -10,10 +10,12 @@ import Contacto from '@/pages/Contacto';
 import AdminLogin from '@/pages/AdminLogin';
 import AdminDashboard from '@/pages/AdminDashboard';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import ScrollManager from '@/components/ScrollManager';
 
 export default function App() {
   return (
     <ToastProvider>
+      <ScrollManager />
       <div className="min-h-screen bg-dark flex flex-col">
         <Navbar />
         <main className="flex-1">
