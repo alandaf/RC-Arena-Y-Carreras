@@ -20,6 +20,7 @@ import {
   Video,
 } from 'lucide-react';
 import FootballIllustration from '@/components/FootballIllustration';
+import VRIllustration from '@/components/VRIllustration';
 import QuoteForm from '@/components/QuoteForm';
 import {
   EMAIL,
@@ -77,19 +78,21 @@ const ACTIVITIES = [
     icon: Video,
     title: 'Pista FPV',
     status: 'later',
-    text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona desde una estación con pantalla, volante y pedales. Contará con 2 estaciones.',
+    text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona. Contará con 2 estaciones con pantalla y volante.',
+    wide: true,
     image: {
-      src: '/fotos/fpv-autos.webp',
+      src: '/fotos/fpv-sistema-completo.webp',
       width: 1200,
-      height: 900,
-      alt: 'Dos autos RC de carreras con cámara a bordo, uno azul y otro gris',
+      height: 1200,
+      alt: 'Sistema FPV completo: pista, autos RC con cámara, monitor FPV, asiento, volante y pedales',
     },
   },
   {
     icon: Glasses,
     title: 'Realidad virtual (VR)',
     status: 'later',
-    text: 'Experiencias de realidad virtual. Contará con 2 estaciones.',
+    text: 'Manejo de los autos RC en primera persona con lentes VR y control remoto. Contará con 2 estaciones.',
+    illustration: VRIllustration,
   },
 ];
 
@@ -205,12 +208,32 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, illustration: Illustration }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, illustration: Illustration, wide }) => (
               <article
                 key={title}
-                className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1"
+                className={`rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 ${
+                  wide ? 'md:col-span-2 md:flex md:items-center md:gap-8' : ''
+                }`}
               >
-                {image && (
+                {image && wide && (
+                  <a
+                    href={image.src}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Ver en grande: ${title}`}
+                    className={`mb-5 block shrink-0 md:mb-0 md:w-1/2 ${focusRing}`}
+                  >
+                    <img
+                      src={image.src}
+                      width={image.width}
+                      height={image.height}
+                      alt={image.alt}
+                      loading="lazy"
+                      className="aspect-square w-full rounded-xl object-contain"
+                    />
+                  </a>
+                )}
+                {image && !wide && (
                   <img
                     src={image.src}
                     width={image.width}
@@ -228,16 +251,19 @@ export default function Home() {
                     </span>
                   </div>
                 )}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
-                    <Icon size={24} aria-hidden="true" />
+                <div className={wide ? 'md:flex-1' : ''}>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
+                      <Icon size={24} aria-hidden="true" />
+                    </div>
+                    <span className={`rounded-full px-3 py-1 text-xs font-bold ${STATUS[status].className}`}>
+                      {STATUS[status].label}
+                    </span>
                   </div>
-                  <span className={`rounded-full px-3 py-1 text-xs font-bold ${STATUS[status].className}`}>
-                    {STATUS[status].label}
-                  </span>
+                  <h3 className="mt-5 text-xl font-extrabold">{title}</h3>
+                  <p className="mt-2 text-ink/80">{text}</p>
+                  {wide && <p className="mt-3 text-sm text-ink/60">Toca la imagen para verla en grande.</p>}
                 </div>
-                <h3 className="mt-5 text-xl font-extrabold">{title}</h3>
-                <p className="mt-2 text-ink/80">{text}</p>
               </article>
             ))}
           </div>
