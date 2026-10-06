@@ -72,13 +72,13 @@ const ACTIVITIES = [
     title: 'Fútbol con autos 1:64',
     status: 'soon',
     space: '0,8 × 1,2 m',
-    text: 'Partidos de fútbol jugados con autos RC a escala 1:64.',
+    text: 'Partidos de fútbol de 3 contra 3, jugados con autos RC a escala 1:64.',
     image: {
       src: '/fotos/futbol-rc.webp',
       width: 1200,
       height: 876,
       illustration: true,
-      alt: 'Ilustración de una mesa de fútbol con autos RC pequeños rojos y verdes, dos arcos y una pelota, sobre caballetes plegables',
+      alt: 'Ilustración de seis personajes de caricatura, tres con camiseta roja y tres con camiseta verde, cada uno con su control remoto, jugando fútbol con autos RC sobre una mesa con borde de madera y dos arcos',
     },
   },
   {
