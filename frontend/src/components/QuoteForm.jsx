@@ -17,11 +17,11 @@ const EVENT_TYPES = [
 ];
 
 const INTERESTS = [
-  'Arena RC',
-  'Carreras 1:76',
-  'Fútbol con autos 1:64',
-  'Pista FPV',
-  'Realidad virtual (VR)',
+  { label: 'Arena RC', disabled: false },
+  { label: 'Carreras 1:76', disabled: false },
+  { label: 'Fútbol con autos 1:64', disabled: false },
+  { label: 'Pista FPV', disabled: true, tag: 'Próximamente' },
+  { label: 'Realidad virtual (VR)', disabled: true, tag: 'Próximamente' },
 ];
 
 const schema = z.object({
@@ -188,13 +188,28 @@ export default function QuoteForm() {
       <fieldset className="sm:col-span-2">
         <legend className="mb-2 text-sm font-semibold text-ink">¿Qué te interesa llevar? (opcional)</legend>
         <div className="flex flex-wrap gap-2">
-          {INTERESTS.map((item) => (
+          {INTERESTS.map(({ label, disabled, tag }) => (
             <label
-              key={item}
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-ink/25 bg-white px-4 py-2 text-sm font-medium text-ink has-[:checked]:border-ink has-[:checked]:bg-primary"
+              key={label}
+              className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                disabled
+                  ? 'cursor-not-allowed border-ink/15 bg-ink/5 text-ink/40 select-none'
+                  : 'cursor-pointer border-ink/25 bg-white text-ink hover:border-ink/50 has-[:checked]:border-ink has-[:checked]:bg-primary'
+              }`}
             >
-              <input type="checkbox" value={item} className="h-4 w-4 accent-ink" {...register('interes')} />
-              {item}
+              <input
+                type="checkbox"
+                value={label}
+                disabled={disabled}
+                className="h-4 w-4 accent-ink disabled:cursor-not-allowed disabled:opacity-40"
+                {...register('interes')}
+              />
+              <span>{label}</span>
+              {tag && (
+                <span className="rounded-full bg-ink/10 px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase text-ink/60">
+                  {tag}
+                </span>
+              )}
             </label>
           ))}
         </div>
