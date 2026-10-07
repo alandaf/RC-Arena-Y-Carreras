@@ -27,20 +27,18 @@ async function crearContacto(req, res, next) {
         contacto.tipo === 'evento'
           ? `Nueva cotización de evento: ${contacto.asunto}`
           : `Nuevo contacto (${contacto.tipo}): ${contacto.asunto}`,
-      template: 'notificacion-dueno.html',
+      template: 'notificacion-contacto.html',
       variables: {
         nombre: contacto.nombre,
         email: contacto.email,
         telefono: telefono || '—',
         fecha: new Date().toLocaleDateString('es-CL'),
-        horario: '—',
         tier:
           contacto.tipo === 'b2b'
             ? `B2B (${contacto.empresa || 'empresa sin nombre'})`
             : contacto.tipo === 'evento'
               ? 'Cotización de evento'
               : 'Consulta general',
-        personas: '—',
         mensaje: contacto.mensaje,
       },
     });
