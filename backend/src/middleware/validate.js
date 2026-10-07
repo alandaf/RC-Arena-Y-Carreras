@@ -35,6 +35,10 @@ const contactoSchema = z.object({
   tipo: z.enum(['general', 'b2b', 'evento']).default('general'),
   empresa: z.string().max(200).optional().nullable(),
   telefono: z.string().max(30).optional().nullable(),
+  fechaEvento: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Fecha inválida').optional().nullable(),
+  horaInicio: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Hora inválida').optional().nullable(),
+  duracion: z.string().max(40).optional().nullable(),
+  personas: z.number().int().min(1).max(5000).optional().nullable(),
 });
 
 const membresiaSchema = z.object({

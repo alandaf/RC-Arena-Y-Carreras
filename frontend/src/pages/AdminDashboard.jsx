@@ -166,6 +166,18 @@ function TablaContactos() {
               </p>
               <p className="text-muted text-xs">{c.email}</p>
               <p className="text-sm mt-2 font-medium">{c.asunto}</p>
+              {c.tipo === 'evento' && (
+                <p className="text-xs text-muted mt-1">
+                  {[
+                    c.fechaEvento && `Fecha: ${new Date(c.fechaEvento).toLocaleDateString('es-CL', { timeZone: 'UTC' })}`,
+                    c.horaInicio && `Inicio: ${c.horaInicio}`,
+                    c.duracion && `Duración: ${c.duracion}`,
+                    c.personas && `Personas: ${c.personas}`,
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </p>
+              )}
               <p className="text-sm text-muted mt-1 whitespace-pre-line">{c.mensaje}</p>
             </div>
             <button

@@ -32,6 +32,10 @@ model Contacto {
   mensaje   String
   tipo      String   @default("general")
   empresa   String?
+  fechaEvento   DateTime? @db.Date
+  horaInicio    String?
+  duracion      String?
+  personas      Int?
   leido     Boolean  @default(false)
   createdAt DateTime @default(now())
 }

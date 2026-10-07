@@ -16,6 +16,8 @@ const EVENT_TYPES = [
   'Otro',
 ];
 
+const DURATIONS = ['1 hora', '2 horas', '3 horas', '4 horas', '5 horas', '6 horas', 'Más de 6 horas'];
+
 const INTERESTS = [
   { label: 'Arena RC', disabled: false },
   { label: 'Carreras 1:76', disabled: false },
@@ -32,7 +34,12 @@ const schema = z.object({
   tipoEvento: z.enum(EVENT_TYPES, { errorMap: () => ({ message: 'Elige el tipo de evento' }) }),
   fecha: z.string().optional(),
   comuna: z.string().min(2, 'Indica la comuna o ciudad del evento'),
-  personas: z.string().optional(),
+  personas: z
+    .string()
+    .min(1, 'Indica cuántas personas asistirán')
+    .refine((v) => Number.isInteger(Number(v)) && Number(v) >= 1 && Number(v) <= 5000, 'Ingresa un número válido'),
+  hora: z.string().optional(),
+  duracion: z.enum(DURATIONS, { errorMap: () => ({ message: 'Elige la duración' }) }),
   interes: z.array(z.string()).optional(),
   comentarios: z.string().max(1000, 'Máximo 1000 caracteres').optional(),
 });
@@ -49,7 +56,7 @@ export default function QuoteForm() {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: { tipoEvento: '', interes: [] },
+    defaultValues: { tipoEvento: '', duracion: '', interes: [] },
   });
 
   const mutation = useMutation({
@@ -70,9 +77,7 @@ export default function QuoteForm() {
   const onSubmit = (datos) => {
     const lineas = [
       `Tipo de evento: ${datos.tipoEvento}`,
-      `Fecha tentativa: ${datos.fecha || 'Por definir'}`,
       `Comuna o ciudad: ${datos.comuna}`,
-      `Personas aprox.: ${datos.personas || 'No indicado'}`,
       `Teléfono/WhatsApp: ${datos.telefono}`,
       `Le interesa: ${datos.interes?.length ? datos.interes.join(', ') : 'No indicado'}`,
     ];
@@ -85,6 +90,10 @@ export default function QuoteForm() {
       asunto: `Cotización: ${datos.tipoEvento}`,
       mensaje: lineas.join('\n'),
       tipo: 'evento',
+      fechaEvento: datos.fecha || null,
+      horaInicio: datos.hora || null,
+      duracion: datos.duracion,
+      personas: Number(datos.personas),
     });
   };
 
@@ -175,12 +184,35 @@ export default function QuoteForm() {
         />
       </Field>
 
-      <Field id="q-personas" label="Cantidad aproximada de personas (opcional)" error={errors.personas?.message}>
+      <Field id="q-hora" label="Hora de inicio (opcional)" error={errors.hora?.message}>
+        <input id="q-hora" type="time" className={inputClass} {...register('hora')} />
+      </Field>
+
+      <Field id="q-duracion" label="Duración del evento" error={errors.duracion?.message}>
+        <select
+          id="q-duracion"
+          aria-invalid={Boolean(errors.duracion)}
+          aria-describedby={errors.duracion ? 'q-duracion-error' : undefined}
+          className={inputClass}
+          {...register('duracion')}
+        >
+          <option value="">Selecciona una opción</option>
+          {DURATIONS.map((d) => (
+            <option key={d} value={d}>
+              {d}
+            </option>
+          ))}
+        </select>
+      </Field>
+
+      <Field id="q-personas" label="Cantidad aproximada de personas" error={errors.personas?.message}>
         <input
           id="q-personas"
           type="number"
           min="1"
           inputMode="numeric"
+          aria-invalid={Boolean(errors.personas)}
+          aria-describedby={errors.personas ? 'q-personas-error' : undefined}
           className={inputClass}
           {...register('personas')}
         />

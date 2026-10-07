@@ -5,10 +5,24 @@ const prisma = new PrismaClient();
 
 async function crearContacto(req, res, next) {
   try {
-    const { nombre, email, asunto, mensaje, tipo, empresa, telefono } = req.body;
+    const {
+      nombre, email, asunto, mensaje, tipo, empresa, telefono,
+      fechaEvento, horaInicio, duracion, personas,
+    } = req.body;
 
     const contacto = await prisma.contacto.create({
-      data: { nombre, email, asunto, mensaje, tipo, empresa },
+      data: {
+        nombre,
+        email,
+        asunto,
+        mensaje,
+        tipo,
+        empresa,
+        fechaEvento: fechaEvento ? new Date(`${fechaEvento}T00:00:00Z`) : null,
+        horaInicio: horaInicio || null,
+        duracion: duracion || null,
+        personas: personas ?? null,
+      },
     });
 
     await enviarEmail({
@@ -33,6 +47,12 @@ async function crearContacto(req, res, next) {
         email: contacto.email,
         telefono: telefono || '—',
         fecha: new Date().toLocaleDateString('es-CL'),
+        fechaEvento: contacto.fechaEvento
+          ? contacto.fechaEvento.toLocaleDateString('es-CL', { timeZone: 'UTC' })
+          : '—',
+        horaInicio: contacto.horaInicio || '—',
+        duracion: contacto.duracion || '—',
+        personas: contacto.personas ?? '—',
         tier:
           contacto.tipo === 'b2b'
             ? `B2B (${contacto.empresa || 'empresa sin nombre'})`
