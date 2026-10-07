@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -40,6 +41,29 @@ const STATUS = {
   later: { label: 'Próximamente', className: 'bg-ink/10 text-ink' },
 };
 
+function CardVideo({ src, poster, width, height, alt }) {
+  const [reducido, setReducido] = useState(false);
+  useEffect(() => {
+    setReducido(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }, []);
+  return (
+    <video
+      src={src}
+      poster={poster}
+      width={width}
+      height={height}
+      aria-label={alt}
+      muted
+      loop
+      playsInline
+      autoPlay={!reducido}
+      controls={reducido}
+      preload="metadata"
+      className="aspect-[4/3] w-full rounded-xl bg-ink object-cover"
+    />
+  );
+}
+
 const ACTIVITIES = [
   {
     icon: HardHat,
@@ -49,8 +73,10 @@ const ACTIVITIES = [
     text: 'Una arena de desafíos para vehículos RC de construcción: mover, cargar y construir sobre arena.',
     image: {
       src: '/fotos/arena-rc.webp',
-      width: 800,
-      height: 600,
+      video: '/videos/arena-rc.mp4',
+      poster: '/videos/arena-rc.webp',
+      width: 640,
+      height: 480,
       alt: 'Camión, topadora, cargador, excavadora y grúa RC sobre la arena, con sus controles alineados en el borde',
     },
   },
@@ -61,10 +87,12 @@ const ACTIVITIES = [
     space: '1,8 × 1,2 m',
     text: 'Pista de carreras para autos RC a escala 1:76, para competir en familia o entre amigos.',
     image: {
-      src: '/fotos/pista-1-76.webp',
-      width: 500,
-      height: 375,
-      alt: 'Pista de carreras 1:76 sobre una alfombra de circuito, con autos y controles',
+      src: '/videos/pista-1-76.webp',
+      video: '/videos/pista-1-76.mp4',
+      poster: '/videos/pista-1-76.webp',
+      width: 640,
+      height: 480,
+      alt: 'Auto 1:76 dando vueltas en la pista, con contador de vueltas',
     },
   },
   {
@@ -242,14 +270,24 @@ export default function Home() {
                 )}
                 {image && !wide && (
                   <div className="relative mb-5">
-                    <img
-                      src={image.src}
-                      width={image.width}
-                      height={image.height}
-                      alt={image.alt}
-                      loading="lazy"
-                      className="aspect-[4/3] w-full rounded-xl object-cover"
-                    />
+                    {image.video ? (
+                      <CardVideo
+                        src={image.video}
+                        poster={image.poster}
+                        width={image.width}
+                        height={image.height}
+                        alt={image.alt}
+                      />
+                    ) : (
+                      <img
+                        src={image.src}
+                        width={image.width}
+                        height={image.height}
+                        alt={image.alt}
+                        loading="lazy"
+                        className="aspect-[4/3] w-full rounded-xl object-cover"
+                      />
+                    )}
                     {image.illustration && (
                       <span className="absolute bottom-2 right-2 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
                         Ilustración
