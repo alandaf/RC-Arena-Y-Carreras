@@ -1,6 +1,6 @@
 export const WHATSAPP_NUMBER = '56976239238';
 export const PHONE_DISPLAY = '+56 9 7623 9238';
-export const EMAIL = 'ventas@simarp.net';
+export const EMAIL = 'reservas@rcarenaycarreras.cl';
 
 const WHATSAPP_MESSAGE = 'Hola! Quiero cotizar un evento con RC Arena & Carreras';
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
