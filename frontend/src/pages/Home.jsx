@@ -92,7 +92,7 @@ const ACTIVITIES = [
       poster: '/videos/pista-1-76.webp',
       width: 640,
       height: 480,
-      alt: 'Auto 1:76 dando vueltas en la pista, con contador de vueltas',
+      alt: 'Auto 1:76 dando vueltas en la pista de 180 × 120 cm, con semáforo y contador de vueltas',
     },
   },
   {
