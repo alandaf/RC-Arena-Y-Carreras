@@ -96,6 +96,21 @@ const ACTIVITIES = [
     },
   },
   {
+    icon: Video,
+    title: 'FPV con autos pequeños 1:64',
+    status: 'available',
+    space: 'aprox. 1,5 × 1,0 m',
+    text: 'Autos 1:64 con cámara a bordo: el piloto maneja con control remoto viendo la pista desde el auto, en la pantalla de un celular.',
+    image: {
+      src: '/videos/fpv-pequenos.webp',
+      video: '/videos/fpv-pequenos.mp4',
+      poster: '/videos/fpv-pequenos.webp',
+      width: 640,
+      height: 480,
+      alt: 'Vista desde la cámara de un auto 1:64 recorriendo una pista pequeña',
+    },
+  },
+  {
     icon: Goal,
     title: 'Fútbol con autos 1:64',
     status: 'soon',
