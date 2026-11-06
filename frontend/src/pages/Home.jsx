@@ -119,18 +119,16 @@ function CardVideo({ src, poster, width, height, alt }) {
   );
 }
 
-// Aviso de envío en tránsito; actualizar o quitar cuando llegue el equipo.
+// Aviso de envío en tránsito, pegado arriba de la imagen; actualizar o quitar cuando llegue el equipo.
 function EnvioBurbuja() {
   return (
-    <span className="absolute right-3 top-3 z-10 flex max-w-[72%] items-start gap-1.5 rounded-xl bg-ink/90 px-2.5 py-1.5 text-left text-[11px] font-semibold leading-snug text-white shadow-lg">
-      <Ship size={14} className="mt-px shrink-0 text-primary" aria-hidden="true" />
+    <p className="flex items-center gap-2 bg-ink px-3 py-2 text-xs leading-snug text-white">
+      <Ship size={16} className="shrink-0 text-primary" aria-hidden="true" />
       <span>
-        <span className="block">En viaje desde Japón</span>
-        <span className="block font-normal text-white/80">
-          Llega a Chile en la primera quincena de diciembre (estimado)
-        </span>
+        <strong>En viaje desde Japón.</strong>{' '}
+        <span className="text-white/80">Llega a Chile en la primera quincena de diciembre (estimado)</span>
       </span>
-    </span>
+    </p>
   );
 }
 
@@ -201,10 +199,11 @@ const ACTIVITIES = [
     status: 'later',
     space: '5,8 × 2,8 m',
     text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona. Contará con 2 estaciones con pantalla y volante.',
-    wide: true,
     enViaje: true,
     image: {
       src: '/fotos/fpv-sistema-completo.webp',
+      zoom: true,
+      contain: true,
       width: 1200,
       height: 1200,
       alt: 'Sistema FPV completo: pista, autos RC con cámara, monitor FPV, asiento, volante y pedales',
@@ -331,34 +330,13 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide, space, enViaje }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, space, enViaje }) => (
               <article
                 key={title}
-                className={`rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 ${
-                  wide ? 'md:col-span-2 md:flex md:items-center md:gap-8' : ''
-                }`}
+                className="rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1"
               >
-                {image && wide && (
-                  <a
-                    href={image.src}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`Ver en grande: ${title}`}
-                    className={`relative mb-5 block shrink-0 md:mb-0 md:w-1/2 ${focusRing}`}
-                  >
-                    {enViaje && <EnvioBurbuja />}
-                    <img
-                      src={image.src}
-                      width={image.width}
-                      height={image.height}
-                      alt={image.alt}
-                      loading="lazy"
-                      className="aspect-square w-full rounded-xl object-contain"
-                    />
-                  </a>
-                )}
-                {image && !wide && (
-                  <div className="relative mb-5">
+                {image && (
+                  <div className="relative mb-5 overflow-hidden rounded-xl">
                     {enViaje && <EnvioBurbuja />}
                     {image.video ? (
                       <CardVideo
@@ -369,14 +347,23 @@ export default function Home() {
                         alt={image.alt}
                       />
                     ) : (
-                      <img
-                        src={image.src}
-                        width={image.width}
-                        height={image.height}
-                        alt={image.alt}
-                        loading="lazy"
-                        className="aspect-[4/3] w-full rounded-xl object-cover"
-                      />
+                      <a
+                        href={image.zoom ? image.src : undefined}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={image.zoom ? `Ver en grande: ${title}` : undefined}
+                        className={`block ${image.zoom ? focusRing : 'pointer-events-none'}`}
+                        tabIndex={image.zoom ? undefined : -1}
+                      >
+                        <img
+                          src={image.src}
+                          width={image.width}
+                          height={image.height}
+                          alt={image.alt}
+                          loading="lazy"
+                          className={`aspect-[4/3] w-full ${image.contain ? 'bg-white object-contain' : 'object-cover'}`}
+                        />
+                      </a>
                     )}
                     {image.illustration && (
                       <span className="absolute bottom-2 right-2 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
@@ -385,7 +372,7 @@ export default function Home() {
                     )}
                   </div>
                 )}
-                <div className={wide ? 'md:flex-1' : ''}>
+                <div>
                   <div className="flex items-center justify-between gap-3">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-ink">
                       <Icon size={24} aria-hidden="true" />
@@ -402,7 +389,7 @@ export default function Home() {
                       Superficie de juego: {space}
                     </p>
                   )}
-                  {wide && <p className="mt-3 text-sm text-ink/60">Toca la imagen para verla en grande.</p>}
+                  {image?.zoom && <p className="mt-3 text-sm text-ink/60">Toca la imagen para verla en grande.</p>}
                 </div>
               </article>
             ))}
@@ -431,7 +418,7 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="relative">
+          <div className="relative overflow-hidden rounded-3xl border-4 border-ink shadow-2xl">
             <EnvioBurbuja />
             <img
               src="/fotos/fpv-vr-experiencia.webp"
@@ -439,7 +426,7 @@ export default function Home() {
               height={876}
               alt="Ilustración de una chica con lentes VR y control remoto y un hombre con gorra roja al volante frente a un monitor con una pista, rodeados de amigos que celebran"
               loading="lazy"
-              className="w-full rounded-3xl border-4 border-ink object-cover shadow-2xl"
+              className="w-full object-cover"
             />
             <span className="absolute bottom-3 right-3 rounded-full bg-ink/80 px-2.5 py-1 text-[11px] font-semibold text-white">
               Ilustración
