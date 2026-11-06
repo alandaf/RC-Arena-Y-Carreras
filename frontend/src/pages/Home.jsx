@@ -122,8 +122,8 @@ function CardVideo({ src, poster, width, height, alt }) {
 // Aviso de envío en tránsito; actualizar o quitar cuando llegue el equipo.
 function EnvioBurbuja() {
   return (
-    <span className="absolute left-3 top-3 z-10 flex max-w-[85%] items-start gap-2 rounded-2xl bg-ink/90 px-3 py-2 text-left text-xs font-semibold leading-snug text-white shadow-lg">
-      <Ship size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
+    <span className="absolute bottom-3 left-3 z-10 flex max-w-[72%] items-start gap-1.5 rounded-xl bg-ink/90 px-2.5 py-1.5 text-left text-[11px] font-semibold leading-snug text-white shadow-lg">
+      <Ship size={14} className="mt-px shrink-0 text-primary" aria-hidden="true" />
       <span>
         <span className="block">En viaje desde Japón</span>
         <span className="block font-normal text-white/80">
