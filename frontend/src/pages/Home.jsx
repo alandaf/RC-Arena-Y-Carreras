@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -41,26 +41,80 @@ const STATUS = {
   later: { label: 'Próximamente', className: 'bg-ink/10 text-ink' },
 };
 
+const PAUSA_PORTADA_MS = 3000;
+
+// Muestra la portada, reproduce el video una vez, vuelve a la portada y repite.
+// Solo reproduce mientras la tarjeta está a la vista.
 function CardVideo({ src, poster, width, height, alt }) {
+  const contenedorRef = useRef(null);
+  const videoRef = useRef(null);
   const [reducido, setReducido] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [verPortada, setVerPortada] = useState(true);
+
   useEffect(() => {
     setReducido(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }, []);
+
+  useEffect(() => {
+    const el = contenedorRef.current;
+    if (!el || !('IntersectionObserver' in window)) {
+      setVisible(true);
+      return undefined;
+    }
+    const observador = new IntersectionObserver(([entrada]) => setVisible(entrada.isIntersecting), {
+      threshold: 0.4,
+    });
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, []);
+
+  const reproducir = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = 0;
+    video.play().then(() => setVerPortada(false)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (reducido) return undefined;
+    if (!visible) {
+      videoRef.current?.pause();
+      setVerPortada(true);
+      return undefined;
+    }
+    if (!verPortada) return undefined;
+    const temporizador = setTimeout(reproducir, PAUSA_PORTADA_MS);
+    return () => clearTimeout(temporizador);
+  }, [visible, verPortada, reducido, reproducir]);
+
   return (
-    <video
-      src={src}
-      poster={poster}
-      width={width}
-      height={height}
-      aria-label={alt}
-      muted
-      loop
-      playsInline
-      autoPlay={!reducido}
-      controls={reducido}
-      preload="metadata"
-      className="aspect-[4/3] w-full rounded-xl bg-ink object-cover"
-    />
+    <div ref={contenedorRef} className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-ink">
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        width={width}
+        height={height}
+        aria-label={alt}
+        muted
+        playsInline
+        controls={reducido}
+        preload="metadata"
+        onEnded={() => setVerPortada(true)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      {!reducido && (
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            verPortada ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      )}
+    </div>
   );
 }
 
