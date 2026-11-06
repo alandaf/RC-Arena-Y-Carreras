@@ -22,7 +22,7 @@ const INTERESTS = [
   { label: 'Arena RC', disabled: false },
   { label: 'Carreras 1:76', disabled: false },
   { label: 'FPV con autos pequeños 1:64', disabled: false },
-  { label: 'Fútbol con autos 1:64', disabled: true, tag: 'Muy pronto' },
+  { label: 'Fútbol con autos 1:64', disabled: false },
   { label: 'Pista FPV (1:24)', disabled: true, tag: 'Próximamente' },
   { label: 'Realidad virtual (VR)', disabled: true, tag: 'Próximamente' },
 ];
