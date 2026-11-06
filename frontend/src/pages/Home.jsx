@@ -17,6 +17,7 @@ import {
   Phone,
   Ruler,
   School,
+  Ship,
   Truck,
   Video,
 } from 'lucide-react';
@@ -118,6 +119,21 @@ function CardVideo({ src, poster, width, height, alt }) {
   );
 }
 
+// Aviso de envío en tránsito; actualizar o quitar cuando llegue el equipo.
+function EnvioBurbuja() {
+  return (
+    <span className="absolute left-3 top-3 z-10 flex max-w-[85%] items-start gap-2 rounded-2xl bg-ink/90 px-3 py-2 text-left text-xs font-semibold leading-snug text-white shadow-lg">
+      <Ship size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />
+      <span>
+        <span className="block">En viaje desde Japón</span>
+        <span className="block font-normal text-white/80">
+          Llega a Chile en la primera quincena de diciembre (estimado)
+        </span>
+      </span>
+    </span>
+  );
+}
+
 const ACTIVITIES = [
   {
     icon: HardHat,
@@ -186,6 +202,7 @@ const ACTIVITIES = [
     space: '5,8 × 2,8 m',
     text: 'Autos RC con cámara a bordo (de unos 18 cm) para manejar en primera persona. Contará con 2 estaciones con pantalla y volante.',
     wide: true,
+    enViaje: true,
     image: {
       src: '/fotos/fpv-sistema-completo.webp',
       width: 1200,
@@ -197,6 +214,7 @@ const ACTIVITIES = [
     icon: Glasses,
     title: 'Realidad virtual (VR)',
     status: 'later',
+    enViaje: true,
     space: '5,8 × 2,8 m (la misma pista del FPV)',
     text: 'Manejo de los autos RC en primera persona con lentes VR y control remoto, en la misma pista que el FPV. Contará con 2 estaciones.',
     image: {
@@ -313,7 +331,7 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide, space }) => (
+            {ACTIVITIES.map(({ icon: Icon, title, text, status, image, wide, space, enViaje }) => (
               <article
                 key={title}
                 className={`rounded-2xl border border-ink/10 bg-white p-6 shadow-sm transition-transform hover:-translate-y-1 ${
@@ -326,8 +344,9 @@ export default function Home() {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Ver en grande: ${title}`}
-                    className={`mb-5 block shrink-0 md:mb-0 md:w-1/2 ${focusRing}`}
+                    className={`relative mb-5 block shrink-0 md:mb-0 md:w-1/2 ${focusRing}`}
                   >
+                    {enViaje && <EnvioBurbuja />}
                     <img
                       src={image.src}
                       width={image.width}
@@ -340,6 +359,7 @@ export default function Home() {
                 )}
                 {image && !wide && (
                   <div className="relative mb-5">
+                    {enViaje && <EnvioBurbuja />}
                     {image.video ? (
                       <CardVideo
                         src={image.video}
@@ -412,6 +432,7 @@ export default function Home() {
           </div>
 
           <div className="relative">
+            <EnvioBurbuja />
             <img
               src="/fotos/fpv-vr-experiencia.webp"
               width={1200}
